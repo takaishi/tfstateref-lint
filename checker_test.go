@@ -12,7 +12,7 @@ func TestBuildRemoteState_CollectsFromAnyTFFile(t *testing.T) {
 data "terraform_remote_state" "base" {
   backend = "s3"
   config = {
-    bucket = "example-terraform-state"
+    bucket = "amzn-s3-demo-bucket"
     key    = "env/base/terraform.tfstate"
   }
 }
@@ -27,7 +27,7 @@ data "terraform_remote_state" "base" {
 		t.Fatal(err)
 	}
 
-	wantURL := "s3://example-terraform-state/env/base/terraform.tfstate"
+	wantURL := "s3://amzn-s3-demo-bucket/env/base/terraform.tfstate"
 	if got := c.labelToStateURL[dir+"\tbase"]; got != wantURL {
 		t.Errorf("labelToStateURL[%q] = %q, want %q", dir+"\tbase", got, wantURL)
 	}

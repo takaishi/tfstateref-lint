@@ -11,7 +11,7 @@ func TestParseRemoteStateBlocks(t *testing.T) {
 data "terraform_remote_state" "network" {
   backend = "s3"
   config = {
-    bucket = "example-terraform-state"
+    bucket = "amzn-s3-demo-bucket"
     key    = "env/network/terraform.tfstate"
     region = "ap-northeast-1"
   }
@@ -20,7 +20,7 @@ data "terraform_remote_state" "network" {
 data "terraform_remote_state" "shared" {
   backend = "s3"
   config = {
-    bucket = "example-terraform-state"
+    bucket = "amzn-s3-demo-bucket"
     key    = "env/shared/terraform.tfstate"
     region = "ap-northeast-1"
   }
@@ -28,8 +28,8 @@ data "terraform_remote_state" "shared" {
 `
 	got := parseRemoteStateBlocks([]byte(content), "remote_state.tf")
 	expected := []remoteStateEntry{
-		{Label: "network", URL: "s3://example-terraform-state/env/network/terraform.tfstate"},
-		{Label: "shared", URL: "s3://example-terraform-state/env/shared/terraform.tfstate"},
+		{Label: "network", URL: "s3://amzn-s3-demo-bucket/env/network/terraform.tfstate"},
+		{Label: "shared", URL: "s3://amzn-s3-demo-bucket/env/shared/terraform.tfstate"},
 	}
 
 	if diff := cmp.Diff(expected, got); diff != "" {
@@ -66,13 +66,13 @@ data "terraform_remote_state" "app" {
   backend   = "s3"
   workspace = "stg"
   config = {
-    bucket = "example-terraform-state"
+    bucket = "amzn-s3-demo-bucket"
     key    = "app/terraform.tfstate"
   }
 }
 `,
 			expected: []remoteStateEntry{
-				{Label: "app", URL: "s3://example-terraform-state/env:/stg/app/terraform.tfstate"},
+				{Label: "app", URL: "s3://amzn-s3-demo-bucket/env:/stg/app/terraform.tfstate"},
 			},
 		},
 		{
@@ -188,7 +188,7 @@ data "terraform_remote_state" "app" {
 			content: `
 data "terraform_remote_state" "app" {
   config = {
-    bucket = "example-terraform-state"
+    bucket = "amzn-s3-demo-bucket"
     key    = "app/terraform.tfstate"
   }
 }

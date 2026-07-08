@@ -40,7 +40,7 @@ Logs go to stderr. With `--json`, results go to stdout:
   "errors": [
     {
       "file": "terraform/service_a/staging/app/remote_state.tf",
-      "message": "terraform_remote_state \"network\" references s3://example-terraform-state/env/network/terraform.tfstate, but the state could not be read"
+      "message": "terraform_remote_state \"network\" references s3://amzn-s3-demo-bucket/env/network/terraform.tfstate, but the state could not be read"
     }
   ],
   "state_existence": { "checked": 12, "errors": [] },
