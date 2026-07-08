@@ -50,6 +50,38 @@ Logs go to stderr. With `--json`, results go to stdout:
 
 Exit codes: 0 = no errors, 1 = lint errors found, 2 = usage error.
 
+## GitHub Actions
+
+```yaml
+name: tfstateref-lint
+
+on:
+  pull_request:
+    paths:
+      - "terraform/**/*.tf"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  tfstateref-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/tfstateref-lint
+          aws-region: ap-northeast-1
+      - run: go install github.com/takaishi/tfstateref-lint/cmd/tfstateref-lint@latest
+      - run: tfstateref-lint terraform/
+```
+
+The IAM role only needs `s3:GetObject` on the tfstate bucket. If state buckets live in multiple AWS accounts, split the job with a matrix and assume a role per account.
+
 ## Limitations
 
 - `backend`, `workspace` and `config` values must be literals; blocks using variables are skipped
