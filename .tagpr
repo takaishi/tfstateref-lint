@@ -1,0 +1,6 @@
+# config file for the tagpr in git config format
+# See https://github.com/Songmu/tagpr for the available options.
+[tagpr]
+	vPrefix = true
+	releaseBranch = main
+	versionFile = -

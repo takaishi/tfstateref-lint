@@ -13,8 +13,20 @@ Supported backends: `s3`, `gcs`, `azurerm`, `remote` (Terraform Cloud / Enterpri
 
 ## Install
 
+Prebuilt binaries for Linux and macOS (x86_64 / arm64) are attached to each [GitHub Release](https://github.com/takaishi/tfstateref-lint/releases), together with `checksums.txt` (sha256).
+The asset names do not change between versions: `tfstateref-lint_<Linux|Darwin>_<x86_64|arm64>.tar.gz`, each containing only the `tfstateref-lint` binary.
+
 ```bash
-go install github.com/takaishi/tfstateref-lint/cmd/tfstateref-lint@latest
+version=vX.Y.Z
+curl -sSfLO "https://github.com/takaishi/tfstateref-lint/releases/download/${version}/tfstateref-lint_Linux_x86_64.tar.gz"
+echo "<sha256>  tfstateref-lint_Linux_x86_64.tar.gz" | sha256sum -c -
+tar xzf tfstateref-lint_Linux_x86_64.tar.gz tfstateref-lint
+```
+
+Or build from source:
+
+```bash
+go install github.com/takaishi/tfstateref-lint/cmd/tfstateref-lint@vX.Y.Z
 ```
 
 ## Usage

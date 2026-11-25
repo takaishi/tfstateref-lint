@@ -1,0 +1,44 @@
+version: 2
+project_name: tfstateref-lint
+builds:
+  - main: ./cmd/tfstateref-lint
+    binary: tfstateref-lint
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.Revision={{.ShortCommit}}
+    env:
+      - CGO_ENABLED=0
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+archives:
+  - name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else }}{{ .Arch }}{{ end }}
+    formats:
+      - tar.gz
+    # Ship only the binary (no README/LICENSE) so the archive layout stays fixed.
+    files:
+      - none*
+release:
+  prerelease: auto
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+snapshot:
+  version_template: "{{ incpatch .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
